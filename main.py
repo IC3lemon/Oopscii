@@ -34,7 +34,7 @@ def stream_webcam_to_ascii():
             os.system('cls')
             print(f'समय : {time.time() - START}')
             print(ascii_output)
-            print('scroll up nigga, and dont resize, it fucks shit up')
+            print('oopsie, scroll up nigga, and dont resize, it fucks shit up')
             elapsed = time.time() - start
             time.sleep(max(0, delay - elapsed))
 
