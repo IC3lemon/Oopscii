@@ -1,14 +1,14 @@
 # Oopscii
 Ascii art engine, renders images, videos as ascii art (hoping to use this to create an ascii art based game engine)
 
-## usage
+## `usage`
 1. ```Clone the repo```
 2. ```pip install -r requirements.txt```
 
 3. Then :
-```cmd
-python main.py              -> video feed
-python test.py <image_path> -> images (or just use python test.py for the default image)
+```
+python main.py                -> video feed
+python test.py <image_path>   -> images (or just use python test.py for the default image)
 ```
 
 ## `monke brain think process :`
@@ -28,7 +28,7 @@ python test.py <image_path> -> images (or just use python test.py for the defaul
 <br><br>
 
 <p float="left">
-  <img src="image.png" width="400" height="415"/>
+  <img src="images/image.png" width="400" height="415"/>
   <img src="images/alrighty.jpg" width="400"/>
 </p>
 
