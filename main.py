@@ -1,47 +1,82 @@
-import cv2
-import time
 from oops import *
+import msvcrt
 
-def frame_to_pil(frame):
-    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    return Image.fromarray(frame_rgb)
+last_rendered = ""
 
-def stream_webcam_to_ascii():
-    START = time.time()
-    cap = cv2.VideoCapture(0)  
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-    if not cap.isOpened():
-        print("Oopsie, Failed to open webcam.")
-        return
+def menu():
+    options = ["video to ascii", "image to ascii", "stream to ascii"]
+    selected = 0
 
-    fps = 16
-    delay = 1.0 / fps
+    while True:
+        clear()
+        print("\n\t\t\t\t\t\033[96mMENU\033[0m\n")
+        print("#" * 90 + "\n")
 
-    try:
-        while True:
-            start = time.time()
-            ret, frame = cap.read()
-            
-            if not ret:
-                break
+        for i, option in enumerate(options):
+            if i == selected:
+                print(f"\t\t\033[92m> {option.upper()} <\033[0m")
+            else:
+                print(f"\t\t  {option}")
 
-            frame = cv2.flip(frame, 1)
-            pil_image = frame_to_pil(frame)
-            ascii_output = textify(pil_image)
+        print("\n" + "#" * 90)
+        print("\nUse ↑ ↓ arrows. Press Enter to select.")
+        print("Press \033[91mX\033[0m to exit")
 
+        key = msvcrt.getch()
+        if key in b'xX':
             os.system('cls')
-            print(f'समय : {time.time() - START}')
-            print(ascii_output)
-            print('oopsie, scroll up nigga, and dont resize, it fucks shit up')
-            elapsed = time.time() - start
-            time.sleep(max(0, delay - elapsed))
+            return 'quit'
 
-    except KeyboardInterrupt:
-        print("\nStopped.")
-    finally:
-        cap.release()
+        if key in b'wW':
+            selected = (selected - 1) % len(options)
+        if key in b'sS':
+            selected = (selected + 1) % len(options)
+
+        if key == b'\xe0':
+            arrow = msvcrt.getch()
+            if arrow == b'H':  # Up
+                selected = (selected - 1) % len(options)
+            elif arrow == b'P':  # Down
+                selected = (selected + 1) % len(options)
+        elif key == b'\r':  # Enter
+            return options[selected]
 
 if __name__ == "__main__":
-    stream_webcam_to_ascii()
+    while True:
+        choice = menu()
+        print(f"\nselected: \033[93m{choice}\033[0m\n")
+        # stream_webcam_to_ascii()
+        os.system('cls')
+        if choice == 'stream to ascii':
+            os.system('cls')
+            last_rendered = stream_webcam_to_ascii()
+            os.system('cls')
+        elif choice == 'image to ascii':
+            os.system('cls')
+            path = input('Enter image path : ')
+            last_rendered = image_to_ascii(path)
+            if path == '':
+                path = 'C:\\Users\\madha\\Oopscii\\images\\alrighty.jpg'
+            os.system('cls')
+            print(f"rendering : \033[93m{path}\033[0m")
+            print(last_rendered)
+            print("Press \033[91mX\033[0m to exit")
+            while True:
+                key = msvcrt.getch()
+                if key in b'xX':
+                    os.system('cls')
+                    break
+
+        elif choice == "video to ascii":
+            os.system('cls')
+            print('bruh not implemeneted')
+            os.system('cls')
+        elif choice == "quit":
+            os.system('cls')
+            break
+    print('\033[93mlast rendered . . .\033[0m')
+    print(last_rendered)
+
