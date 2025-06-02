@@ -72,8 +72,20 @@ if __name__ == "__main__":
 
         elif choice == "video to ascii":
             os.system('cls')
-            print('bruh not implemeneted')
+            path = input('Enter video path : ')
+            last_rendered = video_to_ascii(path)
+            if path == '':
+                path = 'C:\\Users\\madha\\Oopscii\\images\\chainsaw.mp4'
             os.system('cls')
+            print(f"rendering : \033[93m{path}\033[0m")
+            print(last_rendered)
+            print("Press \033[91mX\033[0m to exit")
+            while True:
+                key = msvcrt.getch()
+                if key in b'xX':
+                    os.system('cls')
+                    break
+                
         elif choice == "quit":
             os.system('cls')
             break

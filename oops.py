@@ -111,7 +111,44 @@ def image_to_ascii(img_path):
     IMG = Image.open(img_path)
     return textify(IMG)
     
+def video_to_ascii(vid_path):
+    if vid_path == '':
+        vid_path = 'images/chainsaw.mp4'
 
+    START = time.time()
+    cap = cv2.VideoCapture(vid_path)
+
+    if not cap.isOpened():
+        print("Oopsie, failed to open video.")
+        return
+
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    delay = 1.0 / fps if fps > 0 else 1.0 / 16  # fallback to 16 fps
+
+    try:
+        while True:
+            start = time.time()
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            pil_image = frame_to_pil(frame)
+            ascii_output = textify(pil_image)
+
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print(f'समय : {time.time() - START}')
+            print(ascii_output)
+            print('Press Ctrl+C to stop.')
+
+            elapsed = time.time() - start
+            time.sleep(max(0, delay - elapsed))
+
+    except KeyboardInterrupt:
+        print("Stopped.")
+    finally:
+        cap.release()
+
+    
 charset =  " `.-':_,^=;><+!rc*/z?sLTv)J7(|Fi{C}fI31tlu[neoZ5Yxjya]2ESwqkP6h9d4VpOGbUAKXHm8RD#$Bg0MNWQ%&@"[::-1]
 weights = scatter_weights(len(charset))
 
